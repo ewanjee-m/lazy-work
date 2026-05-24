@@ -77,12 +77,70 @@ function ScatteredFlower({ scale = 1 }: { scale?: number }) {
   );
 }
 
+function Sparkle({ size = 14 }: { size?: number }) {
+  const h = size / 2;
+  const r2 = h;
+  const r1 = h * 0.38;
+  const pts = Array.from({ length: 8 }, (_, i) => {
+    const angle = (i * Math.PI) / 4 - Math.PI / 2;
+    const r = i % 2 === 0 ? r2 : r1;
+    return `${h + r * Math.cos(angle)},${h + r * Math.sin(angle)}`;
+  }).join(' ');
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} fill="none">
+      <polygon points={pts} fill="rgba(255,245,200,0.92)" />
+      <polygon
+        points={pts}
+        fill="none"
+        stroke="rgba(240,210,120,0.35)"
+        strokeWidth="0.6"
+      />
+    </svg>
+  );
+}
+
 const PETALS: { x: string; y: string; delay: number; duration: number; rotate: number }[] = [
-  { x: '18%', y: '12%', delay: 0, duration: 10, rotate: 15 },
+  { x: '18%', y: '12%', delay: 0,   duration: 10, rotate: 15  },
   { x: '72%', y: '30%', delay: 2.5, duration: 12, rotate: -20 },
-  { x: '8%',  y: '55%', delay: 4.5, duration: 11, rotate: 30 },
+  { x: '8%',  y: '55%', delay: 4.5, duration: 11, rotate: 30  },
   { x: '82%', y: '65%', delay: 1.5, duration: 13, rotate: -10 },
+  { x: '55%', y: '45%', delay: 3.2, duration: 9,  rotate: 22  },
+  { x: '38%', y: '75%', delay: 5.0, duration: 14, rotate: -5  },
 ];
+
+const FLOWERS: { left: string; top: string; delay: number; scale: number; floatY: number; floatDur: number; heartbeat?: boolean }[] = [
+  { left: '5%',  top: '32%', delay: 1.5, scale: 0.55, floatY: 6, floatDur: 7.2 },
+  { left: '88%', top: '22%', delay: 2.2, scale: 0.50, floatY: 8, floatDur: 8.5 },
+  { left: '48%', top: '7%',  delay: 3.0, scale: 0.45, floatY: 5, floatDur: 6.8 },
+  { left: '14%', top: '70%', delay: 1.0, scale: 0.50, floatY: 7, floatDur: 9.1 },
+  { left: '76%', top: '58%', delay: 2.8, scale: 0.48, floatY: 6, floatDur: 7.7 },
+  { left: '34%', top: '90%', delay: 2.0, scale: 0.42, floatY: 9, floatDur: 8.0 },
+  { left: '62%', top: '40%', delay: 3.5, scale: 0.46, floatY: 7, floatDur: 8.3, heartbeat: true },
+  { left: '25%', top: '50%', delay: 1.8, scale: 0.44, floatY: 6, floatDur: 7.5 },
+  { left: '90%', top: '75%', delay: 2.5, scale: 0.40, floatY: 5, floatDur: 9.5, heartbeat: true },
+  { left: '42%', top: '62%', delay: 4.0, scale: 0.43, floatY: 8, floatDur: 6.5 },
+];
+
+const SPARKLES: { left: string; top: string; delay: number; size: number; floatDur: number; heartbeat?: boolean }[] = [
+  { left: '10%', top: '15%', delay: 2.0, size: 10, floatDur: 6.0, heartbeat: true },
+  { left: '40%', top: '28%', delay: 3.5, size: 8,  floatDur: 7.5 },
+  { left: '70%', top: '10%', delay: 1.5, size: 12, floatDur: 5.8, heartbeat: true },
+  { left: '55%', top: '55%', delay: 4.0, size: 9,  floatDur: 8.2 },
+  { left: '22%', top: '83%', delay: 2.8, size: 8,  floatDur: 7.0 },
+  { left: '85%', top: '42%', delay: 1.2, size: 11, floatDur: 6.5, heartbeat: true },
+  { left: '30%', top: '18%', delay: 3.0, size: 9,  floatDur: 9.0 },
+  { left: '60%', top: '82%', delay: 2.3, size: 8,  floatDur: 7.8 },
+  { left: '50%', top: '38%', delay: 4.5, size: 7,  floatDur: 6.2, heartbeat: true },
+  { left: '78%', top: '88%', delay: 1.8, size: 10, floatDur: 8.8 },
+];
+
+const heartbeatTransition = {
+  scale: [1, 1.22, 0.95, 1.14, 1, 1, 1] as number[],
+  times:  [0, 0.08, 0.16, 0.24, 0.34, 0.65, 1.0] as number[],
+  duration: 2.8,
+  repeat: Infinity,
+  ease: 'easeInOut' as const,
+};
 
 export function FloralDecor() {
   return (
@@ -110,13 +168,13 @@ export function FloralDecor() {
           strokeLinecap="round"
           opacity={0.6}
         />
-        <Leaf x={190} y={40} rotate={-40} scale={1.1} />
-        <Leaf x={175} y={65} rotate={25} />
+        <Leaf x={190} y={40}  rotate={-40} scale={1.1} />
+        <Leaf x={175} y={65}  rotate={25} />
         <Leaf x={150} y={105} rotate={-20} />
-        <Leaf x={128} y={62} rotate={-50} />
-        <Leaf x={120} y={150} rotate={15} scale={0.9} />
+        <Leaf x={128} y={62}  rotate={-50} />
+        <Leaf x={120} y={150} rotate={15}  scale={0.9} />
         <Leaf x={100} y={195} rotate={-10} scale={0.8} />
-        <Flower x={205} y={20} scale={1} />
+        <Flower x={205} y={20}  scale={1} />
         <Flower x={140} y={118} scale={0.85} />
       </motion.svg>
 
@@ -143,36 +201,39 @@ export function FloralDecor() {
           strokeLinecap="round"
           opacity={0.6}
         />
-        <Leaf x={40} y={170} rotate={200} />
-        <Leaf x={60} y={130} rotate={160} scale={1.1} />
-        <Leaf x={78} y={95} rotate={-160} />
-        <Leaf x={95} y={55} rotate={170} scale={0.9} />
-        <Leaf x={98} y={125} rotate={-140} scale={0.85} />
+        <Leaf x={40}  y={170} rotate={200} />
+        <Leaf x={60}  y={130} rotate={160}  scale={1.1} />
+        <Leaf x={78}  y={95}  rotate={-160} />
+        <Leaf x={95}  y={55}  rotate={170}  scale={0.9} />
+        <Leaf x={98}  y={125} rotate={-140} scale={0.85} />
         <Flower x={110} y={18} scale={0.9} />
-        <Flower x={80} y={78} scale={0.75} />
+        <Flower x={80}  y={78} scale={0.75} />
       </motion.svg>
 
-      {/* Scattered small flowers throughout the page */}
-      {[
-        { left: '5%',  top: '32%', delay: 1.5, scale: 0.55, floatY: 6,  floatDur: 7.2 },
-        { left: '88%', top: '22%', delay: 2.2, scale: 0.50, floatY: 8,  floatDur: 8.5 },
-        { left: '48%', top: '7%',  delay: 3.0, scale: 0.45, floatY: 5,  floatDur: 6.8 },
-        { left: '14%', top: '70%', delay: 1.0, scale: 0.50, floatY: 7,  floatDur: 9.1 },
-        { left: '76%', top: '58%', delay: 2.8, scale: 0.48, floatY: 6,  floatDur: 7.7 },
-        { left: '34%', top: '90%', delay: 2.0, scale: 0.42, floatY: 9,  floatDur: 8.0 },
-      ].map((f, i) => (
+      {/* Scattered flowers throughout the page */}
+      {FLOWERS.map((f, i) => (
         <motion.div
           key={`sf-${i}`}
           className="absolute pointer-events-none"
           style={{ left: f.left, top: f.top }}
           initial={{ opacity: 0, scale: 0.6, y: 0 }}
-          animate={{
+          animate={f.heartbeat ? {
+            opacity: 0.28,
+            scale: heartbeatTransition.scale,
+            y: [0, -f.floatY, 0, f.floatY * 0.5, 0],
+            rotate: [0, 3, 0, -3, 0],
+          } : {
             opacity: 0.28,
             scale: 1,
             y: [0, -f.floatY, 0, f.floatY * 0.5, 0],
             rotate: [0, 3, 0, -3, 0],
           }}
-          transition={{
+          transition={f.heartbeat ? {
+            opacity: { duration: 2.2, ease: 'easeOut', delay: f.delay + 1 },
+            scale:   { ...heartbeatTransition, delay: f.delay + 2 },
+            y:       { duration: f.floatDur, ease: 'easeInOut', delay: f.delay + 1, repeat: Infinity, repeatType: 'loop' },
+            rotate:  { duration: f.floatDur * 1.3, ease: 'easeInOut', delay: f.delay + 1, repeat: Infinity, repeatType: 'loop' },
+          } : {
             opacity: { duration: 2.2, ease: 'easeOut', delay: f.delay + 1 },
             scale:   { duration: 2.2, ease: 'easeOut', delay: f.delay + 1 },
             y:       { duration: f.floatDur, ease: 'easeInOut', delay: f.delay + 1, repeat: Infinity, repeatType: 'loop' },
@@ -180,6 +241,36 @@ export function FloralDecor() {
           }}
         >
           <ScatteredFlower scale={f.scale} />
+        </motion.div>
+      ))}
+
+      {/* Sparkle stars throughout the page */}
+      {SPARKLES.map((s, i) => (
+        <motion.div
+          key={`sp-${i}`}
+          className="absolute pointer-events-none"
+          style={{ left: s.left, top: s.top }}
+          initial={{ opacity: 0, scale: 0.4 }}
+          animate={s.heartbeat ? {
+            opacity: [0, 0.38, 0.38],
+            scale: heartbeatTransition.scale,
+            y: [0, -4, 0, 2, 0],
+          } : {
+            opacity: 0.32,
+            scale: [0.8, 1, 0.8],
+            y: [0, -4, 0, 3, 0],
+          }}
+          transition={s.heartbeat ? {
+            opacity: { duration: 1.8, ease: 'easeOut', delay: s.delay + 1 },
+            scale:   { ...heartbeatTransition, delay: s.delay + 1.5 },
+            y:       { duration: s.floatDur, ease: 'easeInOut', delay: s.delay + 1, repeat: Infinity, repeatType: 'loop' },
+          } : {
+            opacity: { duration: 1.8, ease: 'easeOut', delay: s.delay + 1 },
+            scale:   { duration: s.floatDur * 0.9, ease: 'easeInOut', delay: s.delay + 1, repeat: Infinity, repeatType: 'loop' },
+            y:       { duration: s.floatDur, ease: 'easeInOut', delay: s.delay + 1, repeat: Infinity, repeatType: 'loop' },
+          }}
+        >
+          <Sparkle size={s.size} />
         </motion.div>
       ))}
 
