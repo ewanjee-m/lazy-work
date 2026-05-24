@@ -11,13 +11,11 @@ const SIZE = 120;
 export function Character({ expression }: Props) {
   const [introBlink, setIntroBlink] = useState(true);
 
-  // First-mount slow blink: open → closed → open over 800ms
   useEffect(() => {
     const t = setTimeout(() => setIntroBlink(false), 800);
     return () => clearTimeout(t);
   }, []);
 
-  // During the intro blink we override eyes to 'thinking' (closed) shape briefly
   const displayedExpression: Expression = introBlink ? 'thinking' : expression;
 
   return (
@@ -33,9 +31,11 @@ export function Character({ expression }: Props) {
         }}
       >
         <svg viewBox="0 0 120 120" width={SIZE} height={SIZE}>
-          <circle cx="60" cy="60" r="50" fill="#ffffff" stroke="#3a3d35" strokeWidth="2" />
-          <circle cx="42" cy="64" r="3.2" fill="#a3b18a" opacity="0.4" />
-          <circle cx="78" cy="64" r="3.2" fill="#a3b18a" opacity="0.4" />
+          {/* face */}
+          <circle cx="60" cy="60" r="50" fill="#fffdf9" stroke="#3a3d35" strokeWidth="1.5" />
+          {/* rosy cheeks */}
+          <circle cx="42" cy="66" r="5" fill="#f4b8b8" opacity="0.35" />
+          <circle cx="78" cy="66" r="5" fill="#f4b8b8" opacity="0.35" />
           <AnimatePresence mode="wait">
             <motion.g
               key={displayedExpression}
@@ -57,6 +57,19 @@ export function Character({ expression }: Props) {
 
 function Eyes({ expression }: { expression: Expression }) {
   switch (expression) {
+    case 'smiling':
+      return (
+        <g>
+          {/* happy ^^ crescent eyes */}
+          <path d="M40,55 Q44,47 48,55 Z" fill="#3a3d35" />
+          <path d="M72,55 Q76,47 80,55 Z" fill="#3a3d35" />
+          {/* raised eyebrows */}
+          <g stroke="#3a3d35" strokeWidth="1.2" fill="none" strokeLinecap="round" opacity={0.4}>
+            <path d="M39,45 Q44,42 49,45" />
+            <path d="M71,45 Q76,42 81,45" />
+          </g>
+        </g>
+      );
     case 'thinking':
       return (
         <g stroke="#3a3d35" strokeWidth="2.2" fill="none" strokeLinecap="round">
@@ -73,9 +86,16 @@ function Eyes({ expression }: { expression: Expression }) {
       );
     default:
       return (
-        <g stroke="#3a3d35" strokeWidth="2.2" fill="none" strokeLinecap="round">
-          <path d="M40,52 Q44,49 48,52" />
-          <path d="M72,52 Q76,49 80,52" />
+        <g>
+          <g stroke="#3a3d35" strokeWidth="2.5" fill="none" strokeLinecap="round">
+            <path d="M40,53 Q44,49 48,53" />
+            <path d="M72,53 Q76,49 80,53" />
+          </g>
+          {/* subtle eyebrows */}
+          <g stroke="#3a3d35" strokeWidth="1.2" fill="none" strokeLinecap="round" opacity={0.4}>
+            <path d="M39,47 Q44,44 49,47" />
+            <path d="M71,47 Q76,44 81,47" />
+          </g>
         </g>
       );
   }
@@ -91,7 +111,7 @@ function Mouth({ expression }: { expression: Expression }) {
       return <ellipse cx="60" cy="74" rx="7" ry="4" fill="#3a3d35" />;
     case 'smiling':
       return (
-        <path d="M46,71 Q60,80 74,71" stroke="#3a3d35" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+        <path d="M43,70 Q60,85 77,70" stroke="#3a3d35" strokeWidth="2.4" fill="none" strokeLinecap="round" />
       );
     case 'serious':
       return (
@@ -104,7 +124,7 @@ function Mouth({ expression }: { expression: Expression }) {
     case 'idle':
     default:
       return (
-        <path d="M48,72 Q60,77 72,72" stroke="#3a3d35" strokeWidth="2" fill="none" strokeLinecap="round" />
+        <path d="M46,72 Q60,79 74,72" stroke="#3a3d35" strokeWidth="2.1" fill="none" strokeLinecap="round" />
       );
   }
 }
