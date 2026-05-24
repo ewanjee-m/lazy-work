@@ -6,12 +6,14 @@ import { IntroNote } from '@/components/IntroNote';
 import { ChatStage } from '@/components/ChatStage';
 import { Footer } from '@/components/Footer';
 import { content } from '@/lib/content';
+import { FloralDecor } from '@/components/FloralDecor';
 
 export default function Page() {
   const [noteDone, setNoteDone] = useState(false);
 
   return (
-    <main className="min-h-dvh pb-24">
+    <main className="relative min-h-dvh pb-24">
+      <FloralDecor />
       <IntroNote markdown={content.introNote} onComplete={() => setNoteDone(true)} />
       <AnimatePresence>
         {noteDone && (
