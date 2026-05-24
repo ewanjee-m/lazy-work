@@ -44,6 +44,39 @@ function Leaf({ x, y, rotate = 0, scale = 1 }: { x: number; y: number; rotate?: 
   );
 }
 
+function ScatteredFlower({ scale = 1 }: { scale?: number }) {
+  const size = 40 * scale;
+  const ANGLES_DEG = [-90, -18, 54, 126, 198];
+  const cx = 20, cy = 20;
+  const petalOffset = 9 * scale;
+  const rx = 3.5 * scale;
+  const ry = 7.5 * scale;
+
+  return (
+    <svg width={size} height={size} viewBox="0 0 40 40" fill="none">
+      {ANGLES_DEG.map((deg) => {
+        const rad = (deg * Math.PI) / 180;
+        const px = cx + petalOffset * Math.cos(rad);
+        const py = cy + petalOffset * Math.sin(rad);
+        return (
+          <ellipse
+            key={deg}
+            cx={px}
+            cy={py}
+            rx={rx}
+            ry={ry}
+            fill="rgba(255,253,250,0.9)"
+            stroke="rgba(210,195,178,0.3)"
+            strokeWidth={0.5}
+            transform={`rotate(${deg + 90}, ${px}, ${py})`}
+          />
+        );
+      })}
+      <circle cx={cx} cy={cy} r={3.2 * scale} fill="#f0d080" opacity={0.85} />
+    </svg>
+  );
+}
+
 const PETALS: { x: string; y: string; delay: number; duration: number; rotate: number }[] = [
   { x: '18%', y: '12%', delay: 0, duration: 10, rotate: 15 },
   { x: '72%', y: '30%', delay: 2.5, duration: 12, rotate: -20 },
@@ -118,6 +151,37 @@ export function FloralDecor() {
         <Flower x={110} y={18} scale={0.9} />
         <Flower x={80} y={78} scale={0.75} />
       </motion.svg>
+
+      {/* Scattered small flowers throughout the page */}
+      {[
+        { left: '5%',  top: '32%', delay: 1.5, scale: 0.55, floatY: 6,  floatDur: 7.2 },
+        { left: '88%', top: '22%', delay: 2.2, scale: 0.50, floatY: 8,  floatDur: 8.5 },
+        { left: '48%', top: '7%',  delay: 3.0, scale: 0.45, floatY: 5,  floatDur: 6.8 },
+        { left: '14%', top: '70%', delay: 1.0, scale: 0.50, floatY: 7,  floatDur: 9.1 },
+        { left: '76%', top: '58%', delay: 2.8, scale: 0.48, floatY: 6,  floatDur: 7.7 },
+        { left: '34%', top: '90%', delay: 2.0, scale: 0.42, floatY: 9,  floatDur: 8.0 },
+      ].map((f, i) => (
+        <motion.div
+          key={`sf-${i}`}
+          className="absolute pointer-events-none"
+          style={{ left: f.left, top: f.top }}
+          initial={{ opacity: 0, scale: 0.6, y: 0 }}
+          animate={{
+            opacity: 0.28,
+            scale: 1,
+            y: [0, -f.floatY, 0, f.floatY * 0.5, 0],
+            rotate: [0, 3, 0, -3, 0],
+          }}
+          transition={{
+            opacity: { duration: 2.2, ease: 'easeOut', delay: f.delay + 1 },
+            scale:   { duration: 2.2, ease: 'easeOut', delay: f.delay + 1 },
+            y:       { duration: f.floatDur, ease: 'easeInOut', delay: f.delay + 1, repeat: Infinity, repeatType: 'loop' },
+            rotate:  { duration: f.floatDur * 1.3, ease: 'easeInOut', delay: f.delay + 1, repeat: Infinity, repeatType: 'loop' },
+          }}
+        >
+          <ScatteredFlower scale={f.scale} />
+        </motion.div>
+      ))}
 
       {/* Floating petals — warm white */}
       {PETALS.map((p, i) => (
