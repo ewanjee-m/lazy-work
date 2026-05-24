@@ -65,15 +65,15 @@ function ScatteredFlower({ scale = 1 }: { scale?: number }) {
             cy={py}
             rx={rx}
             ry={ry}
-            fill="rgba(255,253,250,0.95)"
-            stroke="rgba(200,185,165,0.5)"
-            strokeWidth={0.7}
+            fill="rgba(255,252,248,0.98)"
+            stroke="rgba(190,170,148,0.6)"
+            strokeWidth={0.8}
             transform={`rotate(${deg + 90}, ${px}, ${py})`}
           />
         );
       })}
-      <circle cx={cx} cy={cy} r={3.5 * scale} fill="#e8c040" opacity={0.95} />
-      <circle cx={cx} cy={cy} r={1.8 * scale} fill="#c8900a" opacity={0.8} />
+      <circle cx={cx} cy={cy} r={3.8 * scale} fill="#e8c040" opacity={0.98} />
+      <circle cx={cx} cy={cy} r={2.0 * scale} fill="#c07000" opacity={0.85} />
     </svg>
   );
 }
@@ -81,7 +81,7 @@ function ScatteredFlower({ scale = 1 }: { scale?: number }) {
 function Sparkle({ size = 14 }: { size?: number }) {
   const h = size / 2;
   const r2 = h;
-  const r1 = h * 0.35;
+  const r1 = h * 0.32;
   const pts = Array.from({ length: 8 }, (_, i) => {
     const angle = (i * Math.PI) / 4 - Math.PI / 2;
     const r = i % 2 === 0 ? r2 : r1;
@@ -89,8 +89,8 @@ function Sparkle({ size = 14 }: { size?: number }) {
   }).join(' ');
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} fill="none">
-      <polygon points={pts} fill="rgba(240,210,100,0.95)" />
-      <polygon points={pts} fill="none" stroke="rgba(200,160,40,0.4)" strokeWidth="0.5" />
+      <polygon points={pts} fill="rgba(240,210,90,0.98)" />
+      <polygon points={pts} fill="none" stroke="rgba(180,140,20,0.5)" strokeWidth="0.6" />
     </svg>
   );
 }
@@ -106,39 +106,39 @@ const PETALS: { x: string; y: string; delay: number; duration: number; rotate: n
 
 const FLOWERS: {
   left: string; top: string; delay: number; scale: number;
-  floatY: number; floatDur: number; heartbeat?: boolean;
+  floatY: number; floatDur: number; spinDur: number; heartbeat?: boolean;
 }[] = [
-  { left: '5%',  top: '32%', delay: 1.0, scale: 0.55, floatY: 6, floatDur: 7.2 },
-  { left: '88%', top: '22%', delay: 1.2, scale: 0.50, floatY: 8, floatDur: 8.5 },
-  { left: '48%', top: '7%',  delay: 1.5, scale: 0.48, floatY: 5, floatDur: 6.8 },
-  { left: '14%', top: '70%', delay: 0.8, scale: 0.52, floatY: 7, floatDur: 9.1 },
-  { left: '76%', top: '58%', delay: 1.3, scale: 0.50, floatY: 6, floatDur: 7.7 },
-  { left: '34%', top: '90%', delay: 1.1, scale: 0.45, floatY: 9, floatDur: 8.0 },
-  { left: '62%', top: '40%', delay: 1.6, scale: 0.48, floatY: 7, floatDur: 8.3, heartbeat: true },
-  { left: '25%', top: '50%', delay: 0.9, scale: 0.46, floatY: 6, floatDur: 7.5 },
-  { left: '90%', top: '75%', delay: 1.4, scale: 0.43, floatY: 5, floatDur: 9.5, heartbeat: true },
-  { left: '42%', top: '62%', delay: 1.7, scale: 0.45, floatY: 8, floatDur: 6.5 },
+  { left: '5%',  top: '32%', delay: 1.0, scale: 0.55, floatY: 6, floatDur: 7.2,  spinDur: 24 },
+  { left: '88%', top: '22%', delay: 1.2, scale: 0.52, floatY: 8, floatDur: 8.5,  spinDur: 20 },
+  { left: '48%', top: '7%',  delay: 1.5, scale: 0.50, floatY: 5, floatDur: 6.8,  spinDur: 28 },
+  { left: '14%', top: '70%', delay: 0.8, scale: 0.54, floatY: 7, floatDur: 9.1,  spinDur: 22 },
+  { left: '76%', top: '58%', delay: 1.3, scale: 0.52, floatY: 6, floatDur: 7.7,  spinDur: 26 },
+  { left: '34%', top: '90%', delay: 1.1, scale: 0.48, floatY: 9, floatDur: 8.0,  spinDur: 30 },
+  { left: '62%', top: '40%', delay: 1.6, scale: 0.50, floatY: 7, floatDur: 8.3,  spinDur: 18, heartbeat: true },
+  { left: '25%', top: '50%', delay: 0.9, scale: 0.48, floatY: 6, floatDur: 7.5,  spinDur: 25 },
+  { left: '90%', top: '75%', delay: 1.4, scale: 0.46, floatY: 5, floatDur: 9.5,  spinDur: 21, heartbeat: true },
+  { left: '42%', top: '62%', delay: 1.7, scale: 0.48, floatY: 8, floatDur: 6.5,  spinDur: 23 },
 ];
 
 const SPARKLES: {
   left: string; top: string; delay: number; size: number;
-  floatDur: number; heartbeat?: boolean;
+  floatDur: number; spinDur: number; heartbeat?: boolean;
 }[] = [
-  { left: '10%', top: '15%', delay: 0.8, size: 12, floatDur: 6.0, heartbeat: true },
-  { left: '40%', top: '28%', delay: 1.5, size: 10, floatDur: 7.5 },
-  { left: '70%', top: '10%', delay: 0.6, size: 13, floatDur: 5.8, heartbeat: true },
-  { left: '55%', top: '55%', delay: 1.8, size: 10, floatDur: 8.2 },
-  { left: '22%', top: '83%', delay: 1.2, size: 10, floatDur: 7.0 },
-  { left: '85%', top: '42%', delay: 0.5, size: 12, floatDur: 6.5, heartbeat: true },
-  { left: '30%', top: '18%', delay: 1.3, size: 11, floatDur: 9.0 },
-  { left: '60%', top: '82%', delay: 1.0, size: 10, floatDur: 7.8 },
-  { left: '50%', top: '38%', delay: 2.0, size: 9,  floatDur: 6.2, heartbeat: true },
-  { left: '78%', top: '88%', delay: 0.7, size: 11, floatDur: 8.8 },
+  { left: '10%', top: '15%', delay: 0.8, size: 12, floatDur: 6.0, spinDur: 8,  heartbeat: true },
+  { left: '40%', top: '28%', delay: 1.5, size: 10, floatDur: 7.5, spinDur: 6  },
+  { left: '70%', top: '10%', delay: 0.6, size: 13, floatDur: 5.8, spinDur: 7,  heartbeat: true },
+  { left: '55%', top: '55%', delay: 1.8, size: 10, floatDur: 8.2, spinDur: 9  },
+  { left: '22%', top: '83%', delay: 1.2, size: 10, floatDur: 7.0, spinDur: 6  },
+  { left: '85%', top: '42%', delay: 0.5, size: 12, floatDur: 6.5, spinDur: 8,  heartbeat: true },
+  { left: '30%', top: '18%', delay: 1.3, size: 11, floatDur: 9.0, spinDur: 7  },
+  { left: '60%', top: '82%', delay: 1.0, size: 10, floatDur: 7.8, spinDur: 10 },
+  { left: '50%', top: '38%', delay: 2.0, size: 9,  floatDur: 6.2, spinDur: 5,  heartbeat: true },
+  { left: '78%', top: '88%', delay: 0.7, size: 11, floatDur: 8.8, spinDur: 9  },
 ];
 
-const HB_SCALE   = [1, 1.25, 0.92, 1.16, 1, 1, 1] as number[];
-const HB_TIMES   = [0, 0.08, 0.18, 0.28, 0.38, 0.65, 1.0] as number[];
-const HB_CONFIG  = { duration: 2.8, repeat: Infinity, ease: 'easeInOut' as const };
+const HB_SCALE  = [1, 1.28, 0.90, 1.18, 1, 1, 1] as number[];
+const HB_TIMES  = [0, 0.08, 0.18, 0.28, 0.38, 0.65, 1.0] as number[];
+const HB_CONFIG = { duration: 2.8, repeat: Infinity, ease: 'easeInOut' as const };
 
 export function FloralDecor() {
   return (
@@ -149,7 +149,7 @@ export function FloralDecor() {
         viewBox="0 0 220 240"
         fill="none"
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.5 }}
+        animate={{ opacity: 0.52 }}
         transition={{ duration: 2.8, ease: 'easeOut', delay: 0.5 }}
       >
         <path d="M210,10 Q190,50 165,85 Q140,120 115,170 Q100,195 90,225" stroke="#588157" strokeWidth="1.5" strokeLinecap="round" opacity={0.7} />
@@ -170,7 +170,7 @@ export function FloralDecor() {
         viewBox="0 0 160 200"
         fill="none"
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.45 }}
+        animate={{ opacity: 0.48 }}
         transition={{ duration: 2.8, ease: 'easeOut', delay: 1 }}
       >
         <path d="M20,190 Q40,150 60,115 Q80,80 95,45 Q105,25 115,10" stroke="#588157" strokeWidth="1.4" strokeLinecap="round" opacity={0.7} />
@@ -184,18 +184,18 @@ export function FloralDecor() {
         <Flower x={80}  y={78} scale={0.75} />
       </motion.svg>
 
-      {/* Scattered flowers */}
+      {/* Scattered flowers — float + continuous spin */}
       {FLOWERS.map((f, i) => (
         <motion.div
           key={`sf-${i}`}
           className="absolute pointer-events-none"
           style={{ left: f.left, top: f.top }}
-          initial={{ opacity: 0, scale: 0.5, y: 0 }}
+          initial={{ opacity: 0, scale: 0.5 }}
           animate={{
-            opacity: 0.55,
-            scale: f.heartbeat ? HB_SCALE : 1,
+            opacity: 0.72,
+            scale:  f.heartbeat ? HB_SCALE : 1,
             y:      [0, -f.floatY, 0, f.floatY * 0.4, 0],
-            rotate: [0, 4, 0, -4, 0],
+            rotate: [0, 360],
           }}
           transition={{
             opacity: { duration: 1.8, ease: 'easeOut', delay: f.delay },
@@ -203,14 +203,14 @@ export function FloralDecor() {
               ? { ...HB_CONFIG, times: HB_TIMES, delay: f.delay + 0.5 }
               : { duration: 1.8, ease: 'easeOut', delay: f.delay },
             y:       { duration: f.floatDur, ease: 'easeInOut', delay: f.delay, repeat: Infinity, repeatType: 'loop' },
-            rotate:  { duration: f.floatDur * 1.3, ease: 'easeInOut', delay: f.delay, repeat: Infinity, repeatType: 'loop' },
+            rotate:  { duration: f.spinDur, ease: 'linear', delay: f.delay, repeat: Infinity, repeatType: 'loop' },
           }}
         >
           <ScatteredFlower scale={f.scale} />
         </motion.div>
       ))}
 
-      {/* Sparkle stars */}
+      {/* Sparkle stars — float + fast spin */}
       {SPARKLES.map((s, i) => (
         <motion.div
           key={`sp-${i}`}
@@ -218,9 +218,10 @@ export function FloralDecor() {
           style={{ left: s.left, top: s.top }}
           initial={{ opacity: 0, scale: 0.3 }}
           animate={{
-            opacity: 0.6,
-            scale:   s.heartbeat ? HB_SCALE : [0.85, 1.05, 0.85],
+            opacity: 0.68,
+            scale:   s.heartbeat ? HB_SCALE : [0.85, 1.08, 0.85],
             y:       [0, -5, 0, 3, 0],
+            rotate:  [0, 360],
           }}
           transition={{
             opacity: { duration: 1.5, ease: 'easeOut', delay: s.delay },
@@ -228,6 +229,7 @@ export function FloralDecor() {
               ? { ...HB_CONFIG, times: HB_TIMES, delay: s.delay + 0.3 }
               : { duration: s.floatDur * 0.9, ease: 'easeInOut', delay: s.delay, repeat: Infinity, repeatType: 'loop' },
             y:       { duration: s.floatDur, ease: 'easeInOut', delay: s.delay, repeat: Infinity, repeatType: 'loop' },
+            rotate:  { duration: s.spinDur, ease: 'linear', delay: s.delay, repeat: Infinity, repeatType: 'loop' },
           }}
         >
           <Sparkle size={s.size} />
@@ -242,14 +244,14 @@ export function FloralDecor() {
           style={{ left: p.x, top: p.y }}
           initial={{ opacity: 0, y: 0, rotate: p.rotate }}
           animate={{
-            opacity: [0, 0.45, 0.3, 0],
+            opacity: [0, 0.48, 0.32, 0],
             y:      [-5, -25, -50, -75],
             rotate: [p.rotate, p.rotate + 20, p.rotate + 35],
           }}
           transition={{ duration: p.duration, delay: p.delay + 2, repeat: Infinity, ease: 'easeInOut' }}
         >
           <svg viewBox="0 0 16 22" fill="none">
-            <ellipse cx="8" cy="11" rx="5" ry="9" fill="rgba(255,252,248,0.88)" stroke="rgba(210,195,175,0.3)" strokeWidth="0.5" />
+            <ellipse cx="8" cy="11" rx="5" ry="9" fill="rgba(255,252,248,0.9)" stroke="rgba(210,195,175,0.35)" strokeWidth="0.5" />
           </svg>
         </motion.div>
       ))}
