@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { loadHistory, saveHistory, type Message } from '@/lib/chat-storage';
+import { loadHistory, saveHistory, clearHistory, type Message } from '@/lib/chat-storage';
 import type { Expression } from '@/lib/expression-from-text';
 import { expressionFromText } from '@/lib/expression-from-text';
 
@@ -33,6 +33,12 @@ export function Chat({ greeting, onExpressionChange }: Props) {
     if (messages.length > 0) saveHistory(messages);
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  useEffect(() => {
+    if (!error) return;
+    const t = setTimeout(() => setError(null), 4000);
+    return () => clearTimeout(t);
+  }, [error]);
 
   async function send() {
     const text = input.trim();
@@ -94,6 +100,13 @@ export function Chat({ greeting, onExpressionChange }: Props) {
     }
   }
 
+  function reset() {
+    clearHistory();
+    setMessages([{ role: 'assistant', content: greeting }]);
+    setError(null);
+    onExpressionChange?.('idle');
+  }
+
   return (
     <div className="flex flex-col flex-1 min-h-[320px]">
       <div className="flex-1 flex flex-col gap-3 px-4 py-4 overflow-y-auto">
@@ -119,6 +132,15 @@ export function Chat({ greeting, onExpressionChange }: Props) {
 
       {error && (
         <div className="px-4 py-2 text-sm text-ink-muted italic">{error}</div>
+      )}
+
+      {messages.length > 2 && (
+        <button
+          onClick={reset}
+          className="self-end text-xs text-ink-muted hover:text-ink mr-3 mb-1 transition-colors"
+        >
+          처음부터 다시
+        </button>
       )}
 
       <div className="flex gap-2 p-3 border-t border-[#e5e0d4]">
