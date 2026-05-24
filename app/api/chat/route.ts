@@ -18,7 +18,7 @@ function isMessage(x: unknown): x is IncomingMessage {
 }
 
 export async function POST(req: Request): Promise<Response> {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.ANTHROPIC_API_KEY_JEE ?? process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     return Response.json({ error: 'server_misconfigured' }, { status: 500 });
   }
